@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_11_17_120634) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_17_122853) do
+  create_table "departments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.bigint "location_id", null: false
+    t.bigint "head_employee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["head_employee_id"], name: "index_departments_on_head_employee_id"
+    t.index ["location_id"], name: "index_departments_on_location_id"
+    t.index ["name", "location_id"], name: "index_departments_on_name_and_location_id", unique: true
+    t.index ["name"], name: "index_departments_on_name"
+  end
+
   create_table "locations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "city", null: false
     t.string "state_code", null: false
@@ -40,4 +52,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_17_120634) do
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
+  add_foreign_key "departments", "locations"
 end

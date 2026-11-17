@@ -54,6 +54,11 @@ function Layout() {
                 <ListItemText primary="Locations" />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+              <ListItemButton component={RouterLink} to="/departments">
+                <ListItemText primary="Departments" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
       </Drawer>

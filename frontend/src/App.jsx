@@ -3,6 +3,9 @@ import { AuthProvider } from './auth/AuthContext';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import AcceptInvitationPage from './pages/AcceptInvitationPage';
+import DepartmentDetailPage from './pages/DepartmentDetailPage';
+import DepartmentFormPage from './pages/DepartmentFormPage';
+import DepartmentsPage from './pages/DepartmentsPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
 import LocationDetailPage from './pages/LocationDetailPage';
@@ -30,6 +33,10 @@ function App() {
               <Route path="/locations/new" element={<LocationFormPage />} />
               <Route path="/locations/:id" element={<LocationDetailPage />} />
               <Route path="/locations/:id/edit" element={<LocationFormPage />} />
+              <Route path="/departments" element={<DepartmentsPage />} />
+              <Route path="/departments/new" element={<DepartmentFormPage />} />
+              <Route path="/departments/:id" element={<DepartmentDetailPage />} />
+              <Route path="/departments/:id/edit" element={<DepartmentFormPage />} />
             </Route>
           </Route>
         </Routes>
