@@ -47,6 +47,16 @@ module V1
       end
     end
 
+    def job_titles
+      q = params.dig(:filter, :q).to_s.strip
+      scope = Salary.where.not(job_title: [nil, ""]).select(:job_title).distinct.order(:job_title)
+      if q.present?
+        scope = scope.where("LOWER(salaries.job_title) LIKE ?", "%#{q.downcase}%")
+      end
+      titles = scope.limit(20).pluck(:job_title)
+      render json: { job_titles: titles }
+    end
+
     private
 
     def set_salary

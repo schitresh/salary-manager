@@ -12,6 +12,7 @@ function AsyncAutocomplete({
   disabled = false,
   helperText = '',
   clearable = true,
+  freeSolo = false,
 }) {
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState([]);
@@ -49,18 +50,20 @@ function AsyncAutocomplete({
 
   return (
     <Autocomplete
-      value={value || null}
+      value={value ?? null}
       onChange={(_e, newValue) => onChange(newValue)}
       inputValue={inputValue}
       onInputChange={(_e, newInputValue, reason) => {
         if (reason === 'reset') return;
         setInputValue(newInputValue);
+        if (freeSolo && reason === 'input') onChange(newInputValue || '');
       }}
       options={mergedOptions}
       getOptionLabel={getOptionLabel}
       isOptionEqualToValue={isOptionEqualToValue || ((opt, val) => opt?.id === val?.id)}
       loading={loading}
       disabled={disabled}
+      freeSolo={freeSolo}
       clearOnBlur={false}
       disableClearable={!clearable}
       filterOptions={(x) => x}

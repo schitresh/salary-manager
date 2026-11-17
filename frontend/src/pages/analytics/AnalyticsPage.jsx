@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Box,
@@ -14,10 +14,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import AsyncAutocomplete from '../../components/AsyncAutocomplete';
 import PageHeader from '../../components/PageHeader';
 import { getDepartments } from '../../api/departments';
 import { getLocations } from '../../api/locations';
-import { getSalaryAnalytics } from '../../api/salaries';
+import { getSalaryAnalytics, getSalaryJobTitles } from '../../api/salaries';
 
 const EMPTY_FILTERS = {
   department_id: '',
@@ -107,6 +108,11 @@ function AnalyticsPage() {
     [locations]
   );
 
+  const fetchJobTitleOptions = useCallback(async (query) => {
+    const res = await getSalaryJobTitles(query);
+    return res?.job_titles || [];
+  }, []);
+
   const isEmptyResult = analytics && analytics.count === 0;
 
   return (
@@ -151,6 +157,16 @@ function AnalyticsPage() {
                   ))}
                 </Select>
               </FormControl>
+              <AsyncAutocomplete
+                label="Job Title"
+                value={filters.job_title || null}
+                onChange={(val) => handleChange('job_title', typeof val === 'string' ? val : (val || ''))}
+                fetchOptions={fetchJobTitleOptions}
+                getOptionLabel={(opt) => opt || ''}
+                isOptionEqualToValue={(opt, val) => opt === val}
+                placeholder="Search job titles"
+                freeSolo
+              />
               <TextField
                 fullWidth
                 label="City"
@@ -162,12 +178,6 @@ function AnalyticsPage() {
                 label="State Code"
                 value={filters.state_code}
                 onChange={(e) => handleChange('state_code', e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="Job Title"
-                value={filters.job_title}
-                onChange={(e) => handleChange('job_title', e.target.value)}
               />
             </Box>
             <Stack direction="row" spacing={1}>

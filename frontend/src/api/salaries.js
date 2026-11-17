@@ -40,3 +40,10 @@ export function getSalaryAnalytics({ filters = {} } = {}) {
   const query = params.toString();
   return apiRequest(`/analytics${query ? `?${query}` : ''}`);
 }
+
+export function getSalaryJobTitles(query = '') {
+  const params = new URLSearchParams();
+  if (query) params.set('filter[q]', query);
+  const qs = params.toString();
+  return apiRequest(`/salaries/job_titles${qs ? `?${qs}` : ''}`);
+}

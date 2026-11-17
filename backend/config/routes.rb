@@ -20,7 +20,11 @@ Rails.application.routes.draw do
     resources :locations, only: [:index, :show, :create, :update]
     resources :departments, only: [:index, :show, :create, :update]
     resources :employees, only: [:index, :show, :create, :update]
-    resources :salaries, only: [:index, :show, :create, :update]
+    resources :salaries, only: [:index, :show, :create, :update] do
+      collection do
+        get :job_titles
+      end
+    end
     get "analytics", to: "analytics#show"
   end
 end
