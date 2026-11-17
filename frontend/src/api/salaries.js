@@ -38,5 +38,5 @@ export function getSalaryAnalytics({ filters = {} } = {}) {
     }
   });
   const query = params.toString();
-  return apiRequest(`/salaries/analytics${query ? `?${query}` : ''}`);
+  return apiRequest(`/analytics${query ? `?${query}` : ''}`);
 }

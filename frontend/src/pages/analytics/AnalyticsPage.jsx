@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Paper,
@@ -117,67 +116,60 @@ function AnalyticsPage() {
       <Paper sx={{ p: 2, mb: 3 }}>
         <Box component="form" onSubmit={handleApply}>
           <Stack spacing={2}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <FormControl fullWidth size="small">
-                  <InputLabel id="analytics-department-label">Department</InputLabel>
-                  <Select
-                    labelId="analytics-department-label"
-                    label="Department"
-                    value={filters.department_id}
-                    onChange={(e) => handleChange('department_id', e.target.value)}
-                  >
-                    <MenuItem value="">All departments</MenuItem>
-                    {departmentOptions.map((opt) => (
-                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <FormControl fullWidth size="small">
-                  <InputLabel id="analytics-location-label">Location</InputLabel>
-                  <Select
-                    labelId="analytics-location-label"
-                    label="Location"
-                    value={filters.location_id}
-                    onChange={(e) => handleChange('location_id', e.target.value)}
-                  >
-                    <MenuItem value="">All locations</MenuItem>
-                    {locationOptions.map((opt) => (
-                      <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="City"
-                  value={filters.city}
-                  onChange={(e) => handleChange('city', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="State Code"
-                  value={filters.state_code}
-                  onChange={(e) => handleChange('state_code', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <TextField
-                  fullWidth
-                  size="small"
-                  label="Job Title"
-                  value={filters.job_title}
-                  onChange={(e) => handleChange('job_title', e.target.value)}
-                />
-              </Grid>
-            </Grid>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(3, minmax(220px, 1fr))' },
+                gap: 2,
+              }}
+            >
+              <FormControl fullWidth>
+                <InputLabel id="analytics-department-label">Department</InputLabel>
+                <Select
+                  labelId="analytics-department-label"
+                  label="Department"
+                  value={filters.department_id}
+                  onChange={(e) => handleChange('department_id', e.target.value)}
+                >
+                  <MenuItem value="">All departments</MenuItem>
+                  {departmentOptions.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="analytics-location-label">Location</InputLabel>
+                <Select
+                  labelId="analytics-location-label"
+                  label="Location"
+                  value={filters.location_id}
+                  onChange={(e) => handleChange('location_id', e.target.value)}
+                >
+                  <MenuItem value="">All locations</MenuItem>
+                  {locationOptions.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                fullWidth
+                label="City"
+                value={filters.city}
+                onChange={(e) => handleChange('city', e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="State Code"
+                value={filters.state_code}
+                onChange={(e) => handleChange('state_code', e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="Job Title"
+                value={filters.job_title}
+                onChange={(e) => handleChange('job_title', e.target.value)}
+              />
+            </Box>
             <Stack direction="row" spacing={1}>
               <Button type="submit" variant="contained" disabled={loading}>
                 {loading ? 'Loading...' : 'Apply'}
@@ -203,20 +195,18 @@ function AnalyticsPage() {
           <Typography variant="subtitle1" sx={{ mb: 2 }}>
             Results for current salaries ({analytics.currency}) — {analytics.count} record{analytics.count === 1 ? '' : 's'}
           </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard label="Count" value={analytics.count} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard label="Total" value={`${analytics.currency} ${analytics.total}`} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard label="Average" value={analytics.average != null ? `${analytics.currency} ${analytics.average}` : '-'} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <StatCard label="Median" value={analytics.median != null ? `${analytics.currency} ${analytics.median}` : '-'} />
-            </Grid>
-          </Grid>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr', md: 'repeat(4, minmax(180px, 1fr))' },
+              gap: 2,
+            }}
+          >
+            <StatCard label="Count" value={analytics.count} />
+            <StatCard label="Total" value={`${analytics.currency} ${analytics.total}`} />
+            <StatCard label="Average" value={analytics.average != null ? `${analytics.currency} ${analytics.average}` : '-'} />
+            <StatCard label="Median" value={analytics.median != null ? `${analytics.currency} ${analytics.median}` : '-'} />
+          </Box>
         </Box>
       )}
 

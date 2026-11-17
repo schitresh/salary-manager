@@ -5,7 +5,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 ## 1. Scope and goals
 
 - Provide HR-facing analytics that answer pay questions via aggregate metrics over **current applicable salaries** only.
-- Expose a backend endpoint `GET /v1/salaries/analytics` returning **total, average, and median** of `total_amount` for the filtered, current-salary result set.
+- Expose a backend endpoint `GET /v1/analytics` returning **total, average, and median** of `total_amount` for the filtered, current-salary result set.
 - Support filtering by department, location, city, state code, and job title (resolved via relations) and enforce **single-currency** correctness by raising a clear error on mixed-currency results.
 - Deliver a frontend analytics view with filter controls and clear display of results and error states (including mixed-currency).
 
@@ -24,7 +24,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 - New salary CRUD behavior (Module 4 complete).
 
 ### Acceptance criteria
-- `GET /v1/salaries/analytics` (authenticated HR) returns correct `total`, `average`, `median` for **current applicable salaries** matching supplied filters.
+- `GET /v1/analytics` (authenticated HR) returns correct `total`, `average`, `median` for **current applicable salaries** matching supplied filters.
 - Non-current salaries are excluded (future `applicable_from`, or `applicable_till` before today).
 - Filters `department_id`, `location_id`, `city`, `state_code`, `job_title` correctly constrain results via relations.
 - Mixed-currency filtered results produce a clear error response (no aggregates returned); single-currency results succeed with the currency indicated.
@@ -41,7 +41,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 
 ### 3.1 Endpoint & contract
 
-- **Route:** `GET /v1/salaries/analytics` (collection/action under salaries namespace, authenticated HR).
+- **Route:** `GET /v1/analytics` (authenticated HR), implemented in a dedicated analytics controller (`V1::AnalyticsController`).
 - **Query params:** `filter[department_id]`, `filter[location_id]`, `filter[city]`, `filter[state_code]`, `filter[job_title]` (all optional; combinable).
   - `department_id`, `location_id`: exact match (resolved via relations).
   - `city`: partial, case-insensitive match on location city.
@@ -89,7 +89,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 ## 4. Frontend design
 
 ### 4.1 API module
-- Extend `frontend/src/api/salaries.js` with `getSalaryAnalytics({ filters })` calling `GET /salaries/analytics` with `filter[...]` params.
+- Extend `frontend/src/api/salaries.js` with `getSalaryAnalytics({ filters })` calling `GET /analytics` with `filter[...]` params.
 
 ### 4.2 Routing & navigation
 - Add an **Analytics** view/screen (e.g. route `/analytics`) accessible from the authenticated layout and sidebar, as a first-class HR feature (separate from CRUD list pages).
@@ -102,7 +102,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 
 ## 5. Testing (core, fast, deterministic)
 
-- **Request/API tests (`/v1/salaries/analytics`):**
+- **Request/API tests (`/v1/analytics`):**
   - Auth enforced (401 without token).
   - Correct scoping: includes only current salaries (open-ended or covering today), excludes future and expired records.
   - Correct aggregates: `total`, `average`, `median` (including even/odd counts) for a known fixture dataset.
@@ -113,7 +113,7 @@ This plan details the Analytics vertical slice (Phase 3, Module 5) defined in `a
 
 ## 6. Implementation steps (suggested order)
 
-1. **Backend routing & action:** add `GET /v1/salaries/analytics`, build current-salary scope with joins and filters.
+1. **Backend routing & action:** add `GET /v1/analytics` (dedicated controller), build current-salary scope with joins and filters.
 2. **Aggregation logic:** implement currency consistency check and total/average/median computation; define/return response and error shapes.
 3. **Backend tests:** request specs covering scoping, aggregates, filters, mixed-currency, and auth/empty cases.
 4. **Frontend API & routing:** add `getSalaryAnalytics`, route, and sidebar **Analytics** entry.
