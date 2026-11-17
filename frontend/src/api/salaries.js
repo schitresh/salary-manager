@@ -29,3 +29,14 @@ export function updateSalary(id, payload) {
     body: JSON.stringify({ salary: payload }),
   });
 }
+
+export function getSalaryAnalytics({ filters = {} } = {}) {
+  const params = new URLSearchParams();
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== '') {
+      params.set(`filter[${key}]`, value);
+    }
+  });
+  const query = params.toString();
+  return apiRequest(`/salaries/analytics${query ? `?${query}` : ''}`);
+}

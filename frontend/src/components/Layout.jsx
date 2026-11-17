@@ -11,6 +11,7 @@ const navItems = [
   { label: 'Departments', to: '/departments' },
   { label: 'Employees', to: '/employees' },
   { label: 'Salaries', to: '/salaries' },
+  { label: 'Analytics', to: '/analytics' },
 ];
 
 function isNavItemSelected(pathname, to) {

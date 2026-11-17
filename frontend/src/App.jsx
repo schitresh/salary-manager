@@ -16,6 +16,7 @@ import HomePage from './pages/home/HomePage';
 import LocationDetailPage from './pages/locations/LocationDetailPage';
 import LocationFormPage from './pages/locations/LocationFormPage';
 import LocationsPage from './pages/locations/LocationsPage';
+import AnalyticsPage from './pages/analytics/AnalyticsPage';
 import SalaryDetailPage from './pages/salaries/SalaryDetailPage';
 import SalaryFormPage from './pages/salaries/SalaryFormPage';
 import SalariesPage from './pages/salaries/SalariesPage';
@@ -51,6 +52,7 @@ function App() {
               <Route path="/salaries/new" element={<SalaryFormPage />} />
               <Route path="/salaries/:id" element={<SalaryDetailPage />} />
               <Route path="/salaries/:id/edit" element={<SalaryFormPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
             </Route>
           </Route>
         </Routes>
