@@ -1,12 +1,27 @@
 import { AppBar, Box, Button, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar, Typography } from '@mui/material';
-import { Link as RouterLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 
 const drawerWidth = 220;
 
+const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Users', to: '/users' },
+  { label: 'Locations', to: '/locations' },
+  { label: 'Departments', to: '/departments' },
+  { label: 'Employees', to: '/employees' },
+  { label: 'Salaries', to: '/salaries' },
+];
+
+function isNavItemSelected(pathname, to) {
+  if (to === '/') return pathname === '/';
+  return pathname === to || pathname.startsWith(`${to}/`);
+}
+
 function Layout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     await signOut();
@@ -39,36 +54,29 @@ function Layout() {
         <Toolbar />
         <Box sx={{ overflow: 'auto' }}>
           <List>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/">
-                <ListItemText primary="Home" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/users">
-                <ListItemText primary="Users" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/locations">
-                <ListItemText primary="Locations" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/departments">
-                <ListItemText primary="Departments" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/employees">
-                <ListItemText primary="Employees" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton component={RouterLink} to="/salaries">
-                <ListItemText primary="Salaries" />
-              </ListItemButton>
-            </ListItem>
+            {navItems.map((item) => (
+              <ListItem key={item.to} disablePadding>
+                <ListItemButton
+                  component={RouterLink}
+                  to={item.to}
+                  selected={isNavItemSelected(location.pathname, item.to)}
+                  sx={{
+                    mx: 1,
+                    borderRadius: 1,
+                    '&.Mui-selected': {
+                      bgcolor: 'primary.main',
+                      color: 'primary.contrastText',
+                      '&:hover': { bgcolor: 'primary.dark' },
+                    },
+                    '&.Mui-selected .MuiListItemText-primary': {
+                      fontWeight: 600,
+                    },
+                  }}
+                >
+                  <ListItemText primary={item.label} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
         </Box>
       </Drawer>

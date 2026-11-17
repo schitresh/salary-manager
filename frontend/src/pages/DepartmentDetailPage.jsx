@@ -40,11 +40,11 @@ function DepartmentDetailPage() {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+      <Stack spacing={2} sx={{ mb: 3 }}>
         <Typography variant="h4">Department Details</Typography>
-        <Stack direction="row" spacing={1}>
-          <Button variant="outlined" onClick={() => navigate('/departments')}>Back</Button>
-          <Button variant="contained" onClick={() => navigate(`/departments/${id}/edit`)}>Edit</Button>
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+          <Button variant="outlined" size="small" onClick={() => navigate('/departments')}>Back</Button>
+          <Button variant="contained" size="small" onClick={() => navigate(`/departments/${id}/edit`)}>Edit</Button>
         </Stack>
       </Stack>
 

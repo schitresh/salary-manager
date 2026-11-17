@@ -100,7 +100,7 @@ function EmployeesPage() {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+      <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", sm: "center" }} spacing={2} sx={{ mb: 3 }}>
         <Typography variant="h4">Employees</Typography>
         <Button variant="contained" onClick={() => navigate('/employees/new')}>
           Add Employee

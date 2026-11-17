@@ -64,23 +64,37 @@ function AsyncAutocomplete({
       clearOnBlur={false}
       disableClearable={!clearable}
       filterOptions={(x) => x}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          label={label}
-          placeholder={placeholder}
-          helperText={helperText}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {loading ? <CircularProgress color="inherit" size={18} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-        />
-      )}
+      renderInput={(params) => {
+        const { InputProps, inputProps, InputLabelProps, slotProps, ...rest } = params;
+        const endAdornment = (
+          <>
+            {loading ? <CircularProgress color="inherit" size={18} /> : null}
+            {InputProps?.endAdornment || slotProps?.input?.endAdornment}
+          </>
+        );
+
+        return (
+          <TextField
+            {...rest}
+            inputProps={inputProps}
+            label={label}
+            placeholder={placeholder}
+            helperText={helperText}
+            slotProps={{
+              ...slotProps,
+              input: {
+                ...(InputProps || {}),
+                ...(slotProps?.input || {}),
+                endAdornment,
+              },
+              inputLabel: {
+                ...(InputLabelProps || {}),
+                ...(slotProps?.inputLabel || {}),
+              },
+            }}
+          />
+        );
+      }}
     />
   );
 }

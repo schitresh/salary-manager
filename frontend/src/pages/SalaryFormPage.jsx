@@ -236,7 +236,7 @@ function SalaryFormPage() {
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField label="Currency" name="currency" value={values.currency} onChange={handleChange} fullWidth required helperText="e.g. INR, USD" />
-              <TextField label="Frequency" name="frequency" value={values.frequency} fullWidth InputProps={{ readOnly: true }} helperText="Monthly (currently supported)" />
+              <TextField label="Frequency" name="frequency" value={values.frequency} fullWidth disabled helperText="Monthly (currently supported)" />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField label="Base Amount" name="base_amount" type="number" value={values.base_amount} onChange={handleChange} fullWidth required inputProps={{ step: '0.01', min: '0' }} />
@@ -246,7 +246,7 @@ function SalaryFormPage() {
               <TextField label="Bonus Amount" name="bonus_amount" type="number" value={values.bonus_amount} onChange={handleChange} fullWidth inputProps={{ step: '0.01', min: '0' }} />
               <TextField label="Deduction Amount" name="deduction_amount" type="number" value={values.deduction_amount} onChange={handleChange} fullWidth inputProps={{ step: '0.01', min: '0' }} />
             </Stack>
-            <Alert severity="success" variant="outlined">Total Amount (preview): {values.currency ? `${values.currency.toUpperCase()} ` : ''}{totalPreview} (server-calculated on save)</Alert>
+            <Alert severity="success" variant="outlined">Total Amount (Preview): {values.currency ? `${values.currency.toUpperCase()} ` : ''}{totalPreview}</Alert>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField label="Applicable From" name="applicable_from" type="date" value={values.applicable_from} onChange={handleChange} fullWidth required slotProps={{ inputLabel: { shrink: true } }} />
               <TextField label="Applicable Till" name="applicable_till" type="date" value={values.applicable_till} onChange={handleChange} fullWidth slotProps={{ inputLabel: { shrink: true } }} helperText="Leave blank for current/open-ended" />

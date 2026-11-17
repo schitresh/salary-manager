@@ -38,11 +38,11 @@ function SalaryDetailPage() {
 
   return (
     <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
+      <Stack spacing={2} sx={{ mb: 3 }}>
         <Typography variant="h4">Salary Details</Typography>
-        <Stack direction="row" spacing={1}>
-          <Button variant="outlined" onClick={() => navigate('/salaries')}>Back</Button>
-          <Button variant="contained" onClick={() => navigate(`/salaries/${id}/edit`)}>Edit</Button>
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+          <Button variant="outlined" size="small" onClick={() => navigate('/salaries')}>Back</Button>
+          <Button variant="contained" size="small" onClick={() => navigate(`/salaries/${id}/edit`)}>Edit</Button>
         </Stack>
       </Stack>
 
