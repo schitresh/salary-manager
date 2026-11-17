@@ -60,4 +60,27 @@ RSpec.describe 'Salaries API', type: :request do
       expect(json_response['salaries'].first['applicable_from']).to eq('2024-07-01')
     end
   end
+
+  describe 'GET /v1/salaries/job_titles' do
+    it 'returns distinct job titles matching query and requires auth' do
+      create(:salary, employee: employee, department: department, job_title: 'Engineer',
+             applicable_from: Date.new(2024, 1, 1), applicable_till: Date.new(2024, 6, 30))
+      create(:salary, employee: employee, department: department, job_title: 'Senior Engineer',
+             applicable_from: Date.new(2024, 7, 1), applicable_till: nil, base_amount: 12000)
+      other_emp = create(:employee, department: department, date_of_joining: Date.new(2024, 1, 1))
+      create(:salary, employee: other_emp, department: department, job_title: 'Manager',
+             applicable_from: Date.new(2024, 1, 1), applicable_till: nil)
+
+      get '/v1/salaries/job_titles'
+      expect(response).to have_http_status(:unauthorized)
+
+      get '/v1/salaries/job_titles', headers: headers
+      expect(response).to have_http_status(:ok)
+      expect(json_response['job_titles']).to eq(['Engineer', 'Manager', 'Senior Engineer'])
+
+      get '/v1/salaries/job_titles', params: { filter: { q: 'engi' } }, headers: headers
+      expect(response).to have_http_status(:ok)
+      expect(json_response['job_titles']).to eq(['Engineer', 'Senior Engineer'])
+    end
+  end
 end
