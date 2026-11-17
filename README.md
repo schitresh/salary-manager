@@ -20,14 +20,33 @@ It supports HR authentication (Devise + JWT), management of locations/department
 - `frontend/` — React + Vite + MUI SPA
 - `artifacts/` — requirements and implementation plans
 
-## Prerequisites
+## Quick start with Docker (recommended)
+
+The easiest way to run the full stack (MySQL + backend + frontend) locally:
+
+```bash
+docker compose up --build
+```
+
+- **Frontend:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** [http://localhost:3000/v1](http://localhost:3000/v1) (health: `GET /v1/health`)
+- **HR login:** `hr@official.com` / `Password123!`
+
+**Notes**
+- On first boot the backend runs `db:prepare` and `db:seed`, which creates schema and demo data (including ~10k employees). The initial seed can take a few minutes; subsequent starts skip bulk reseeding if data already exists.
+- MySQL data is persisted in a Docker volume (`mysql_data`). To reset everything: `docker compose down -v`.
+- To stop: `docker compose down` (or `Ctrl+C` in the attached session).
+
+## Local development (without Docker)
+
+### Prerequisites
 
 - **Ruby** 3.4.5 (project used with RVM gemset `3.4.5@salary-manager`)
 - **Bundler**
-- **MySQL** 8+ running locally (default: `127.0.0.1:3306`, user `root`, no password; configurable via `DB_HOST`)
+- **MySQL** 8+ running locally (default: `127.0.0.1:3306`, user `root`, no password; configurable via `DB_HOST`, `DB_USERNAME`, `DB_PASSWORD`, `DB_PORT`)
 - **Node.js** (v22.x recommended) and **npm**
 
-## Backend setup & run
+### Backend setup & run
 
 ```bash
 cd backend
@@ -45,7 +64,7 @@ bin/rails server -p 3000
 - Seeded HR login (development default): `hr@official.com` / `Password123!`
   - Override seed password with `SEED_HR_PASSWORD` (required in non-dev/test environments).
 
-## Frontend setup & run
+### Frontend setup & run
 
 ```bash
 cd frontend
