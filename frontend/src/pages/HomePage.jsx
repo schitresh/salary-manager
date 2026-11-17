@@ -1,46 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Alert, Box, CircularProgress, Paper, Typography } from '@mui/material';
-import { getHealth } from '../api/client';
+import { Box, Paper, Typography } from '@mui/material';
 
 function HomePage() {
-  const [status, setStatus] = useState('loading');
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let active = true;
-    getHealth()
-      .then((result) => {
-        if (!active) return;
-        setData(result);
-        setStatus('success');
-      })
-      .catch((err) => {
-        if (!active) return;
-        setError(err.message || 'Failed to reach backend');
-        setStatus('error');
-      });
-    return () => {
-      active = false;
-    };
-  }, []);
-
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
         Dashboard
       </Typography>
-      <Paper sx={{ p: 2, maxWidth: 600 }}>
+      <Paper sx={{ p: 3, maxWidth: 720 }}>
         <Typography variant="h6" gutterBottom>
-          Backend connectivity
+          Welcome to Salary Manager
         </Typography>
-        {status === 'loading' && <CircularProgress size={24} />}
-        {status === 'success' && (
-          <Alert severity="success">
-            Connected to backend: {typeof data === 'string' ? data : JSON.stringify(data)}
-          </Alert>
-        )}
-        {status === 'error' && <Alert severity="error">{error}</Alert>}
+        <Typography variant="body1" color="text.secondary">
+          Use the sidebar to manage HR users and, as modules are added, employees, departments, locations, salaries, and analytics.
+        </Typography>
       </Paper>
     </Box>
   );
