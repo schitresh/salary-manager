@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_11_17_123861) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_17_132058) do
   create_table "departments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "location_id", null: false
@@ -55,6 +55,30 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_17_123861) do
     t.index ["state_code"], name: "index_locations_on_state_code"
   end
 
+  create_table "salaries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.date "applicable_from", null: false
+    t.date "applicable_till"
+    t.string "job_title", null: false
+    t.string "currency", null: false
+    t.decimal "base_amount", precision: 12, scale: 2, null: false
+    t.decimal "hra_amount", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "bonus_amount", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "deduction_amount", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "total_amount", precision: 12, scale: 2, null: false
+    t.string "frequency", default: "month", null: false
+    t.bigint "employee_id", null: false
+    t.bigint "department_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applicable_from"], name: "index_salaries_on_applicable_from"
+    t.index ["applicable_till"], name: "index_salaries_on_applicable_till"
+    t.index ["currency"], name: "index_salaries_on_currency"
+    t.index ["department_id"], name: "index_salaries_on_department_id"
+    t.index ["employee_id", "applicable_from"], name: "index_salaries_on_employee_id_and_applicable_from"
+    t.index ["employee_id"], name: "index_salaries_on_employee_id"
+    t.index ["job_title"], name: "index_salaries_on_job_title"
+  end
+
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -77,4 +101,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_17_123861) do
   add_foreign_key "departments", "employees", column: "head_employee_id", on_delete: :nullify
   add_foreign_key "departments", "locations"
   add_foreign_key "employees", "departments"
+  add_foreign_key "salaries", "departments"
+  add_foreign_key "salaries", "employees"
 end

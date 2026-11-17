@@ -44,8 +44,10 @@ function EmployeeDetailPage() {
     <Box>
       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
         <Typography variant="h4">Employee Details</Typography>
-        <Stack direction="row" spacing={1}>
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
           <Button variant="outlined" onClick={() => navigate('/employees')}>Back</Button>
+          <Button variant="outlined" onClick={() => navigate(`/salaries?employee_id=${id}`)}>Salary History</Button>
+          <Button variant="outlined" onClick={() => navigate(`/salaries/new?employee_id=${id}`)}>Add Salary</Button>
           <Button variant="contained" onClick={() => navigate(`/employees/${id}/edit`)}>Edit</Button>
         </Stack>
       </Stack>

@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     resources :locations, only: [:index, :show, :create, :update]
     resources :departments, only: [:index, :show, :create, :update]
     resources :employees, only: [:index, :show, :create, :update]
+    resources :salaries, only: [:index, :show, :create, :update]
   end
 end

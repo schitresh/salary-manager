@@ -1,6 +1,7 @@
 class Employee < ApplicationRecord
   belongs_to :department
   has_one :location, through: :department
+  has_many :salaries
 
   before_validation :normalize_attributes
 
