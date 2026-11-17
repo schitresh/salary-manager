@@ -1,7 +1,9 @@
 module V1
   class HealthController < ApplicationController
+    skip_before_action :authenticate_user_from_jwt!, only: [:show]
+
     def show
-      render plain: '{"status":"ok"}', content_type: "application/json"
+      render json: { status: "ok" }
     end
   end
 end

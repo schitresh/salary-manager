@@ -7,8 +7,15 @@ Rails.application.routes.draw do
 
   namespace :v1 do
     get "health", to: "health#show"
-  end
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+    namespace :auth do
+      post "sign_in", to: "sessions#create"
+      delete "sign_out", to: "sessions#destroy"
+      post "password", to: "passwords#create"
+      match "password", to: "passwords#update", via: [:put, :patch]
+      match "invitation", to: "invitations#update", via: [:put, :patch]
+    end
+
+    resources :users, only: [:index, :create]
+  end
 end
