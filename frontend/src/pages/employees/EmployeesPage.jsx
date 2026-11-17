@@ -74,7 +74,10 @@ function EmployeesPage() {
       name: 'department_id',
       label: 'Department',
       allLabel: 'All departments',
-      options: departments.map((dept) => ({ value: String(dept.id), label: dept.name })),
+      options: departments.map((dept) => ({
+        value: String(dept.id),
+        label: dept.location ? `${dept.name} — ${formatLocation(dept.location)}` : dept.name,
+      })),
     },
     {
       name: 'location_id',

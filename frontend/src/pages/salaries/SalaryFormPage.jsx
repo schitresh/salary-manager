@@ -228,7 +228,9 @@ function SalaryFormPage() {
                   onChange={handleChange}
                 >
                   {departments.map((dept) => (
-                    <MenuItem key={dept.id} value={dept.id}>{dept.name}</MenuItem>
+                    <MenuItem key={dept.id} value={dept.id}>
+                      {dept.name}{dept.location ? ` — ${[dept.location.city, dept.location.state_code, dept.location.country_code].filter(Boolean).join(', ')}` : ''}
+                    </MenuItem>
                   ))}
                 </Select>
               </FormControl>

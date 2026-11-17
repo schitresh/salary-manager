@@ -148,7 +148,11 @@ function SalariesPage() {
               >
                 <MenuItem value="">All departments</MenuItem>
                 {departments.map((d) => (
-                  <MenuItem key={d.id} value={String(d.id)}>{d.name}</MenuItem>
+                  <MenuItem key={d.id} value={String(d.id)}>
+                    {d.location
+                      ? `${d.name} — ${[d.location.city, d.location.state_code, d.location.country_code].filter(Boolean).join(', ')}`
+                      : d.name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
