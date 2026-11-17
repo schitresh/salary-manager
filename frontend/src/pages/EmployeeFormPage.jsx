@@ -61,7 +61,7 @@ function EmployeeFormPage() {
             phone: emp.phone || '',
             date_of_birth: emp.date_of_birth || '',
             date_of_joining: emp.date_of_joining || '',
-            last_working_day: emp.last_working_day || '',
+            last_working_day: emp.last_working_day ?? '',
             job_title: emp.job_title || '',
             department_id: emp.department_id ?? '',
           });
