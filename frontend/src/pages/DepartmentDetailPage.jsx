@@ -52,7 +52,12 @@ function DepartmentDetailPage() {
         <Typography><strong>Name:</strong> {department.name}</Typography>
         <Typography><strong>Location:</strong> {formatLocation(department.location)}</Typography>
         <Typography><strong>Location ID:</strong> {department.location_id}</Typography>
-        <Typography><strong>Head Employee ID:</strong> {department.head_employee_id ?? '-'}</Typography>
+        <Typography>
+          <strong>Head Employee:</strong>{' '}
+          {department.head_employee
+            ? `${department.head_employee.employee_code} - ${department.head_employee.first_name} ${department.head_employee.last_name}`
+            : '-'}
+        </Typography>
         <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
           Created: {department.created_at ? new Date(department.created_at).toLocaleString() : '-'}
         </Typography>

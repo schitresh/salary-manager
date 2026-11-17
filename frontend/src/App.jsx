@@ -6,6 +6,9 @@ import AcceptInvitationPage from './pages/AcceptInvitationPage';
 import DepartmentDetailPage from './pages/DepartmentDetailPage';
 import DepartmentFormPage from './pages/DepartmentFormPage';
 import DepartmentsPage from './pages/DepartmentsPage';
+import EmployeeDetailPage from './pages/EmployeeDetailPage';
+import EmployeeFormPage from './pages/EmployeeFormPage';
+import EmployeesPage from './pages/EmployeesPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
 import LocationDetailPage from './pages/LocationDetailPage';
@@ -37,6 +40,10 @@ function App() {
               <Route path="/departments/new" element={<DepartmentFormPage />} />
               <Route path="/departments/:id" element={<DepartmentDetailPage />} />
               <Route path="/departments/:id/edit" element={<DepartmentFormPage />} />
+              <Route path="/employees" element={<EmployeesPage />} />
+              <Route path="/employees/new" element={<EmployeeFormPage />} />
+              <Route path="/employees/:id" element={<EmployeeDetailPage />} />
+              <Route path="/employees/:id/edit" element={<EmployeeFormPage />} />
             </Route>
           </Route>
         </Routes>

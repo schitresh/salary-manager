@@ -1,5 +1,7 @@
 class Department < ApplicationRecord
   belongs_to :location
+  belongs_to :head_employee, class_name: "Employee", optional: true
+  has_many :employees
 
   before_validation :normalize_attributes
 

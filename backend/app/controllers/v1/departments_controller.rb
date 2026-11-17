@@ -2,12 +2,13 @@ module V1
   class DepartmentsController < ApplicationController
     DEPARTMENT_ATTRIBUTES = %i[id name location_id head_employee_id created_at updated_at].freeze
     LOCATION_ATTRIBUTES = %i[id city state_code country_code].freeze
+    HEAD_EMPLOYEE_ATTRIBUTES = %i[id employee_code first_name last_name].freeze
 
     before_action :authenticate_user!
     before_action :set_department, only: [:show, :update]
 
     def index
-      scope = Department.includes(:location)
+      scope = Department.includes(:location, :head_employee)
       scope = apply_query_filters(scope, exact: %i[location_id], partial: %i[name])
       scope = scope.order(:name, :id)
 
@@ -26,7 +27,7 @@ module V1
       department = Department.new(department_params)
 
       if department.save
-        department = Department.includes(:location).find(department.id)
+        department = Department.includes(:location, :head_employee).find(department.id)
         render json: { department: department_payload(department) }, status: :created
       else
         render_errors(department.errors, status: :unprocessable_content)
@@ -35,7 +36,7 @@ module V1
 
     def update
       if @department.update(department_params)
-        @department = Department.includes(:location).find(@department.id)
+        @department = Department.includes(:location, :head_employee).find(@department.id)
         render json: { department: department_payload(@department) }
       else
         render_errors(@department.errors, status: :unprocessable_content)
@@ -45,7 +46,7 @@ module V1
     private
 
     def set_department
-      @department = Department.includes(:location).find_by(id: params[:id])
+      @department = Department.includes(:location, :head_employee).find_by(id: params[:id])
       render_not_found("Department") unless @department
     end
 
@@ -55,7 +56,8 @@ module V1
 
     def department_payload(department)
       serialize_record(department, DEPARTMENT_ATTRIBUTES).merge(
-        location: department.location ? serialize_record(department.location, LOCATION_ATTRIBUTES) : nil
+        location: department.location ? serialize_record(department.location, LOCATION_ATTRIBUTES) : nil,
+        head_employee: department.head_employee ? serialize_record(department.head_employee, HEAD_EMPLOYEE_ATTRIBUTES) : nil
       )
     end
   end

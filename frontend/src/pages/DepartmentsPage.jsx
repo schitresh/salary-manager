@@ -110,7 +110,13 @@ function DepartmentsPage() {
               header: 'Location',
               render: (_, row) => formatLocation(row.location),
             },
-            { field: 'head_employee_id', header: 'Head Employee ID', render: (v) => v ?? '-' },
+            {
+              field: 'head_employee',
+              header: 'Head',
+              render: (_, row) => row.head_employee
+                ? `${row.head_employee.employee_code} - ${row.head_employee.first_name} ${row.head_employee.last_name}`
+                : '-',
+            },
             {
               field: 'actions',
               header: 'Actions',

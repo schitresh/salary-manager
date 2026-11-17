@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_11_17_122853) do
+ActiveRecord::Schema[8.0].define(version: 2026_11_17_123861) do
   create_table "departments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.bigint "location_id", null: false
@@ -21,6 +21,27 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_17_122853) do
     t.index ["location_id"], name: "index_departments_on_location_id"
     t.index ["name", "location_id"], name: "index_departments_on_name_and_location_id", unique: true
     t.index ["name"], name: "index_departments_on_name"
+  end
+
+  create_table "employees", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "employee_code", null: false
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "email", null: false
+    t.string "phone", null: false
+    t.date "date_of_birth", null: false
+    t.date "date_of_joining", null: false
+    t.date "last_working_day"
+    t.string "job_title", null: false
+    t.bigint "department_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date_of_joining"], name: "index_employees_on_date_of_joining"
+    t.index ["department_id"], name: "index_employees_on_department_id"
+    t.index ["email"], name: "index_employees_on_email", unique: true
+    t.index ["employee_code"], name: "index_employees_on_employee_code", unique: true
+    t.index ["job_title"], name: "index_employees_on_job_title"
+    t.index ["phone"], name: "index_employees_on_phone", unique: true
   end
 
   create_table "locations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -53,5 +74,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_11_17_122853) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "departments", "employees", column: "head_employee_id", on_delete: :nullify
   add_foreign_key "departments", "locations"
+  add_foreign_key "employees", "departments"
 end
