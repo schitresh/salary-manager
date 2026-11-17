@@ -22,6 +22,7 @@ import { getSalaryAnalytics, getSalaryJobTitles } from '../../api/salaries';
 
 const EMPTY_FILTERS = {
   department_id: '',
+  location_id: '',
   country_code: '',
   state_code: '',
   job_title: '',
@@ -106,6 +107,11 @@ function AnalyticsPage() {
     [departments]
   );
 
+  const locationOptions = useMemo(
+    () => locations.map((l) => ({ value: String(l.id), label: formatLocation(l) })),
+    [locations]
+  );
+
   const countryOptions = useMemo(() => {
     const codes = Array.from(new Set(locations.map((l) => l.country_code).filter(Boolean))).sort();
     return codes.map((code) => ({ value: code, label: code }));
@@ -150,6 +156,20 @@ function AnalyticsPage() {
                 >
                   <MenuItem value="">All departments</MenuItem>
                   {departmentOptions.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="analytics-location-label">Location</InputLabel>
+                <Select
+                  labelId="analytics-location-label"
+                  label="Location"
+                  value={filters.location_id}
+                  onChange={(e) => handleChange('location_id', e.target.value)}
+                >
+                  <MenuItem value="">All locations</MenuItem>
+                  {locationOptions.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                   ))}
                 </Select>
