@@ -1,19 +1,7 @@
 import { useEffect, useState } from 'react';
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  TextField,
-  Typography,
-} from '@mui/material';
-import { createUser, getUsers } from '../api/client';
+import { Alert, Box, Button, Paper, TextField, Typography } from '@mui/material';
+import DataTable from '../components/DataTable';
+import { createUser, getUsers } from '../api/users';
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -94,40 +82,22 @@ function UsersPage() {
         <Typography variant="h6" gutterBottom>
           Users
         </Typography>
-        {loading && <CircularProgress size={24} />}
-        {error && <Alert severity="error">{error}</Alert>}
-        {!loading && !error && (
-          <>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Created</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {users.map((u) => (
-                  <TableRow key={u.id}>
-                    <TableCell>{u.id}</TableCell>
-                    <TableCell>{u.email}</TableCell>
-                    <TableCell>{u.created_at ? new Date(u.created_at).toLocaleString() : '-'}</TableCell>
-                  </TableRow>
-                ))}
-                {users.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={3}>No users found.</TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-            {meta && (
-              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Total: {meta.total}
-              </Typography>
-            )}
-          </>
-        )}
+        <DataTable
+          columns={[
+            { field: 'id', header: 'ID' },
+            { field: 'email', header: 'Email' },
+            {
+              field: 'created_at',
+              header: 'Created',
+              render: (value) => (value ? new Date(value).toLocaleString() : '-'),
+            },
+          ]}
+          rows={users}
+          loading={loading}
+          error={error}
+          emptyMessage="No users found."
+          meta={meta}
+        />
       </Paper>
     </Box>
   );

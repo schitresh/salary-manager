@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { acceptInvitation, requestPasswordReset, resetPassword, setUnauthorizedHandler, signIn as apiSignIn, signOut as apiSignOut } from '../api/client';
+import { acceptInvitation, requestPasswordReset, resetPassword, signIn as apiSignIn, signOut as apiSignOut } from '../api/auth';
+import { setUnauthorizedHandler } from '../api/client';
 import { clearAuth, getStoredUser, getToken, setAuth } from './storage';
 
 const AuthContext = createContext(null);
