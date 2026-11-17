@@ -22,8 +22,7 @@ import { getSalaryAnalytics, getSalaryJobTitles } from '../../api/salaries';
 
 const EMPTY_FILTERS = {
   department_id: '',
-  location_id: '',
-  city: '',
+  country_code: '',
   state_code: '',
   job_title: '',
 };
@@ -100,13 +99,25 @@ function AnalyticsPage() {
   };
 
   const departmentOptions = useMemo(
-    () => departments.map((d) => ({ value: String(d.id), label: d.name })),
+    () => departments.map((d) => ({
+      value: String(d.id),
+      label: d.location ? `${d.name} — ${formatLocation(d.location)}` : d.name,
+    })),
     [departments]
   );
-  const locationOptions = useMemo(
-    () => locations.map((l) => ({ value: String(l.id), label: formatLocation(l) })),
-    [locations]
-  );
+
+  const countryOptions = useMemo(() => {
+    const codes = Array.from(new Set(locations.map((l) => l.country_code).filter(Boolean))).sort();
+    return codes.map((code) => ({ value: code, label: code }));
+  }, [locations]);
+
+  const stateOptions = useMemo(() => {
+    const filtered = filters.country_code
+      ? locations.filter((l) => l.country_code === filters.country_code)
+      : locations;
+    const codes = Array.from(new Set(filtered.map((l) => l.state_code).filter(Boolean))).sort();
+    return codes.map((code) => ({ value: code, label: code }));
+  }, [locations, filters.country_code]);
 
   const fetchJobTitleOptions = useCallback(async (query) => {
     const res = await getSalaryJobTitles(query);
@@ -144,15 +155,33 @@ function AnalyticsPage() {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel id="analytics-location-label">Location</InputLabel>
+                <InputLabel id="analytics-country-label">Country</InputLabel>
                 <Select
-                  labelId="analytics-location-label"
-                  label="Location"
-                  value={filters.location_id}
-                  onChange={(e) => handleChange('location_id', e.target.value)}
+                  labelId="analytics-country-label"
+                  label="Country"
+                  value={filters.country_code}
+                  onChange={(e) => {
+                    const country = e.target.value;
+                    setFilters((prev) => ({ ...prev, country_code: country, state_code: '' }));
+                  }}
                 >
-                  <MenuItem value="">All locations</MenuItem>
-                  {locationOptions.map((opt) => (
+                  <MenuItem value="">All countries</MenuItem>
+                  {countryOptions.map((opt) => (
+                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="analytics-state-label">State</InputLabel>
+                <Select
+                  labelId="analytics-state-label"
+                  label="State"
+                  value={filters.state_code}
+                  onChange={(e) => handleChange('state_code', e.target.value)}
+                  disabled={!filters.country_code}
+                >
+                  <MenuItem value="">All states</MenuItem>
+                  {stateOptions.map((opt) => (
                     <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                   ))}
                 </Select>
@@ -166,18 +195,6 @@ function AnalyticsPage() {
                 isOptionEqualToValue={(opt, val) => opt === val}
                 placeholder="Search job titles"
                 freeSolo
-              />
-              <TextField
-                fullWidth
-                label="City"
-                value={filters.city}
-                onChange={(e) => handleChange('city', e.target.value)}
-              />
-              <TextField
-                fullWidth
-                label="State Code"
-                value={filters.state_code}
-                onChange={(e) => handleChange('state_code', e.target.value)}
               />
             </Box>
             <Stack direction="row" spacing={1}>

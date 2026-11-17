@@ -66,6 +66,10 @@ module V1
         scoped = scoped.where(locations: { id: filters[:location_id].to_s.strip })
       end
 
+      if filters[:country_code].present?
+        scoped = scoped.where(locations: { country_code: filters[:country_code].to_s.strip.upcase })
+      end
+
       if filters[:state_code].present?
         scoped = scoped.where(locations: { state_code: filters[:state_code].to_s.strip.upcase })
       end
