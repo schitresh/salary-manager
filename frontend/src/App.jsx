@@ -5,6 +5,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AcceptInvitationPage from './pages/AcceptInvitationPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import HomePage from './pages/HomePage';
+import LocationDetailPage from './pages/LocationDetailPage';
+import LocationFormPage from './pages/LocationFormPage';
+import LocationsPage from './pages/LocationsPage';
 import LoginPage from './pages/LoginPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import UsersPage from './pages/UsersPage';
@@ -23,6 +26,10 @@ function App() {
             <Route element={<Layout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/users" element={<UsersPage />} />
+              <Route path="/locations" element={<LocationsPage />} />
+              <Route path="/locations/new" element={<LocationFormPage />} />
+              <Route path="/locations/:id" element={<LocationDetailPage />} />
+              <Route path="/locations/:id/edit" element={<LocationFormPage />} />
             </Route>
           </Route>
         </Routes>

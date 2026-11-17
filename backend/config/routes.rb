@@ -17,5 +17,6 @@ Rails.application.routes.draw do
     end
 
     resources :users, only: [:index, :create]
+    resources :locations, only: [:index, :show, :create, :update]
   end
 end

@@ -80,12 +80,12 @@ Note: Since foreign keys are by default indexed, they are not mentioned exclusiv
     - Keep the current position as free text currently. When we have the list of all the valid positions, we can validate against it.
 - Location
   - Columns
-    - id: bigint, city: string, state: string, country_code: string
-    - Indexed columns: state, country_code
+    - id: bigint, city: string, state_code: string, country_code: string
+    - Indexed columns: state_code, country_code
   - Validations
-    - City, state, country code are required fields.
-    - City, state, country code should be a unique combination.
-    - Validate state and country code using the 'carmen' gem.
+    - City, state code, country code are required fields.
+    - City, state code, country code should be a unique combination.
+    - Validate state code and country code using the 'carmen' gem.
     - Keep city name as open text for now.
 - Department
   - Columns
@@ -150,7 +150,7 @@ These are the api endpoints. All these endpoints will be prefixed '/v1', so not 
 
 - The analytics endpoint in salaries should return total, average, median salary of total amount of all the filtered records.
 - It should consider only the current applicable salaries, that is, today's date is on or after applicable_from and applicable_till is either null or on or after today's date.
-- It should allow these filters: department id, location id, city, state, job title. They can be resolved via related models like department, location.
+- It should allow these filters: department id, location id, city, state code, job title. They can be resolved via related models like department, location.
 - It should raise an error if there is mismatch in currency of any filtered records, asking user to filter accordingly.
 
 ## Frontend & UI
