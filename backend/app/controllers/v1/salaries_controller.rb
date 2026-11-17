@@ -80,20 +80,12 @@ module V1
     end
 
     def apply_salary_filters(scope)
-      filters = params.fetch(:filter, {})
-
-      scope = scope.where(employee_id: filters[:employee_id].to_s.strip) if filters[:employee_id].present?
-      scope = scope.where(department_id: filters[:department_id].to_s.strip) if filters[:department_id].present?
-
-      if filters[:currency].present?
-        scope = scope.where(currency: filters[:currency].to_s.strip.upcase)
-      end
-
-      if filters[:job_title].present?
-        scope = scope.where("LOWER(salaries.job_title) LIKE ?", "%#{filters[:job_title].to_s.strip.downcase}%")
-      end
-
-      scope
+      apply_query_filters(
+        scope,
+        exact: { employee_id: "salaries.employee_id", department_id: "salaries.department_id" },
+        exact_upcase: { currency: "salaries.currency" },
+        partial: { job_title: "salaries.job_title" }
+      )
     end
   end
 end

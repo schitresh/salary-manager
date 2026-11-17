@@ -86,33 +86,60 @@ class ApplicationController < ActionController::API
 
   # --- Filters ---
   # Applies common filter[...] params:
-  # - exact: exact match on column (value stripped)
-  # - exact_upcase: exact match with uppercased value (e.g. codes)
+  # - exact / exact_upcase: exact match (value stripped, upcased for exact_upcase)
   # - partial: case-insensitive contains match
+  # Field specs may be symbols/strings (param and column name are the same, same table),
+  # or hashes mapping filter param => qualified/simple column (e.g. { job_title: "salaries.job_title" }).
   def apply_query_filters(scope, exact: [], exact_upcase: [], partial: [])
     filters = params.fetch(:filter, {})
 
-    Array(exact).each do |field|
-      value = filters[field]
+    normalize_filter_specs(exact).each do |param, column|
+      value = filters[param]
       next if value.blank?
 
-      scope = scope.where(field => value.to_s.strip)
+      scope = apply_exact_filter(scope, column, value.to_s.strip)
     end
 
-    Array(exact_upcase).each do |field|
-      value = filters[field]
+    normalize_filter_specs(exact_upcase).each do |param, column|
+      value = filters[param]
       next if value.blank?
 
-      scope = scope.where(field => value.to_s.strip.upcase)
+      scope = apply_exact_filter(scope, column, value.to_s.strip.upcase)
     end
 
-    Array(partial).each do |field|
-      value = filters[field]
+    normalize_filter_specs(partial).each do |param, column|
+      value = filters[param]
       next if value.blank?
 
-      scope = scope.where("LOWER(#{scope.table_name}.#{field}) LIKE ?", "%#{value.to_s.strip.downcase}%")
+      qualified = column.include?(".") ? column : "#{scope.table_name}.#{column}"
+      scope = scope.where("LOWER(#{qualified}) LIKE ?", "%#{value.to_s.strip.downcase}%")
     end
 
     scope
+  end
+
+  def normalize_filter_specs(specs)
+    case specs
+    when Hash
+      specs.to_a
+    when Array
+      specs.flat_map do |spec|
+        if spec.is_a?(Hash)
+          spec.to_a
+        else
+          [[spec.to_sym, spec.to_s]]
+        end
+      end
+    else
+      [[specs.to_sym, specs.to_s]]
+    end
+  end
+
+  def apply_exact_filter(scope, column, value)
+    if column.include?(".")
+      scope.where("#{column} = ?", value)
+    else
+      scope.where(column => value)
+    end
   end
 end

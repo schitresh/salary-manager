@@ -5,11 +5,7 @@ import { getDepartment } from '../../api/departments';
 import DetailFields from '../../components/DetailFields';
 import PageHeader from '../../components/PageHeader';
 import ResourceState from '../../components/ResourceState';
-
-function formatLocation(location) {
-  if (!location) return '-';
-  return [location.city, location.state_code, location.country_code].filter(Boolean).join(', ');
-}
+import { formatLocation } from '../../utils/formatters';
 
 function DepartmentDetailPage() {
   const { id } = useParams();

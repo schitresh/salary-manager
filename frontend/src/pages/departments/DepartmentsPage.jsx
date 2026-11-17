@@ -6,13 +6,9 @@ import FilterBar from '../../components/FilterBar';
 import PageHeader from '../../components/PageHeader';
 import { getDepartments } from '../../api/departments';
 import { getLocations } from '../../api/locations';
+import { formatLocation } from '../../utils/formatters';
 
 const EMPTY_FILTERS = { name: '', location_id: '' };
-
-function formatLocation(location) {
-  if (!location) return '-';
-  return [location.city, location.state_code, location.country_code].filter(Boolean).join(', ');
-}
 
 function DepartmentsPage() {
   const navigate = useNavigate();

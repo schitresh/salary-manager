@@ -17,6 +17,7 @@ import AsyncAutocomplete from '../../components/AsyncAutocomplete';
 import { getDepartments } from '../../api/departments';
 import { getEmployee, getEmployees } from '../../api/employees';
 import { createSalary, getSalary, updateSalary } from '../../api/salaries';
+import { formatDepartmentOption } from '../../utils/formatters';
 
 const initialValues = {
   employee_id: '',
@@ -229,7 +230,7 @@ function SalaryFormPage() {
                 >
                   {departments.map((dept) => (
                     <MenuItem key={dept.id} value={dept.id}>
-                      {dept.name}{dept.location ? ` — ${[dept.location.city, dept.location.state_code, dept.location.country_code].filter(Boolean).join(', ')}` : ''}
+                      {formatDepartmentOption(dept)}
                     </MenuItem>
                   ))}
                 </Select>

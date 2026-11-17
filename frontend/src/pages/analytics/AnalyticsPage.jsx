@@ -19,6 +19,7 @@ import PageHeader from '../../components/PageHeader';
 import { getDepartments } from '../../api/departments';
 import { getLocations } from '../../api/locations';
 import { getSalaryAnalytics, getSalaryJobTitles } from '../../api/salaries';
+import { formatDepartmentOption, formatLocation } from '../../utils/formatters';
 
 const EMPTY_FILTERS = {
   department_id: '',
@@ -27,11 +28,6 @@ const EMPTY_FILTERS = {
   state_code: '',
   job_title: '',
 };
-
-function formatLocation(location) {
-  if (!location) return '-';
-  return [location.city, location.state_code, location.country_code].filter(Boolean).join(', ');
-}
 
 function StatCard({ label, value }) {
   return (
@@ -102,7 +98,7 @@ function AnalyticsPage() {
   const departmentOptions = useMemo(
     () => departments.map((d) => ({
       value: String(d.id),
-      label: d.location ? `${d.name} — ${formatLocation(d.location)}` : d.name,
+      label: formatDepartmentOption(d),
     })),
     [departments]
   );

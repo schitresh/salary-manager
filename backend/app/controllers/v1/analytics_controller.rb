@@ -55,34 +55,13 @@ module V1
     end
 
     def apply_analytics_filters(scope)
-      filters = params.fetch(:filter, {})
       scoped = scope.joins(department: :location)
-
-      if filters[:department_id].present?
-        scoped = scoped.where(salaries: { department_id: filters[:department_id].to_s.strip })
-      end
-
-      if filters[:location_id].present?
-        scoped = scoped.where(locations: { id: filters[:location_id].to_s.strip })
-      end
-
-      if filters[:country_code].present?
-        scoped = scoped.where(locations: { country_code: filters[:country_code].to_s.strip.upcase })
-      end
-
-      if filters[:state_code].present?
-        scoped = scoped.where(locations: { state_code: filters[:state_code].to_s.strip.upcase })
-      end
-
-      if filters[:city].present?
-        scoped = scoped.where("LOWER(locations.city) LIKE ?", "%#{filters[:city].to_s.strip.downcase}%")
-      end
-
-      if filters[:job_title].present?
-        scoped = scoped.where("LOWER(salaries.job_title) LIKE ?", "%#{filters[:job_title].to_s.strip.downcase}%")
-      end
-
-      scoped
+      apply_query_filters(
+        scoped,
+        exact: { department_id: "salaries.department_id", location_id: "locations.id" },
+        exact_upcase: { country_code: "locations.country_code", state_code: "locations.state_code" },
+        partial: { city: "locations.city", job_title: "salaries.job_title" }
+      )
     end
 
     def compute_median(sorted_amounts)

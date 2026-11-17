@@ -7,6 +7,7 @@ import PageHeader from '../../components/PageHeader';
 import { getDepartments } from '../../api/departments';
 import { getEmployee, getEmployees } from '../../api/employees';
 import { getSalaries } from '../../api/salaries';
+import { formatDepartmentOption } from '../../utils/formatters';
 
 const EMPTY_TEXT_FILTERS = { job_title: '', currency: '' };
 
@@ -149,9 +150,7 @@ function SalariesPage() {
                 <MenuItem value="">All departments</MenuItem>
                 {departments.map((d) => (
                   <MenuItem key={d.id} value={String(d.id)}>
-                    {d.location
-                      ? `${d.name} — ${[d.location.city, d.location.state_code, d.location.country_code].filter(Boolean).join(', ')}`
-                      : d.name}
+                    {formatDepartmentOption(d)}
                   </MenuItem>
                 ))}
               </Select>

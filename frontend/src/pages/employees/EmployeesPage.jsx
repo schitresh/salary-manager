@@ -7,6 +7,7 @@ import PageHeader from '../../components/PageHeader';
 import { getDepartments } from '../../api/departments';
 import { getEmployees } from '../../api/employees';
 import { getLocations } from '../../api/locations';
+import { formatDepartmentOption, formatLocation } from '../../utils/formatters';
 
 const EMPTY_FILTERS = {
   employee_code: '',
@@ -15,11 +16,6 @@ const EMPTY_FILTERS = {
   department_id: '',
   location_id: '',
 };
-
-function formatLocation(location) {
-  if (!location) return '-';
-  return [location.city, location.state_code, location.country_code].filter(Boolean).join(', ');
-}
 
 function EmployeesPage() {
   const navigate = useNavigate();
@@ -76,7 +72,7 @@ function EmployeesPage() {
       allLabel: 'All departments',
       options: departments.map((dept) => ({
         value: String(dept.id),
-        label: dept.location ? `${dept.name} — ${formatLocation(dept.location)}` : dept.name,
+        label: formatDepartmentOption(dept),
       })),
     },
     {

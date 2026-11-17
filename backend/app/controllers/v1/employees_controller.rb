@@ -76,22 +76,17 @@ module V1
     end
 
     def apply_employee_filters(scope)
-      filters = params.fetch(:filter, {})
-
-      if filters[:location_id].present?
-        scope = scope.where(departments: { location_id: filters[:location_id] })
-      end
-
-      scope = scope.where(department_id: filters[:department_id].to_s.strip) if filters[:department_id].present?
-
-      %i[job_title employee_code first_name last_name email].each do |field|
-        value = filters[field]
-        next if value.blank?
-
-        scope = scope.where("LOWER(employees.#{field}) LIKE ?", "%#{value.to_s.strip.downcase}%")
-      end
-
-      scope
+      apply_query_filters(
+        scope,
+        exact: { location_id: "departments.location_id", department_id: "employees.department_id" },
+        partial: {
+          job_title: "employees.job_title",
+          employee_code: "employees.employee_code",
+          first_name: "employees.first_name",
+          last_name: "employees.last_name",
+          email: "employees.email"
+        }
+      )
     end
   end
 end

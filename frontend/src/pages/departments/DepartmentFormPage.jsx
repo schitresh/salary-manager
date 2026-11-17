@@ -17,11 +17,13 @@ import AsyncAutocomplete from '../../components/AsyncAutocomplete';
 import { createDepartment, getDepartment, updateDepartment } from '../../api/departments';
 import { getEmployees } from '../../api/employees';
 import { getLocations } from '../../api/locations';
+import { formatLocation } from '../../utils/formatters';
 
 const initialValues = { name: '', location_id: '' };
 
 function formatLocationOption(location) {
-  return [location.city, location.state_code, location.country_code].filter(Boolean).join(', ');
+  const label = formatLocation(location);
+  return label === '-' ? '' : label;
 }
 
 function formatEmployeeOption(emp) {
