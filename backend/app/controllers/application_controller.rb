@@ -54,6 +54,19 @@ class ApplicationController < ActionController::API
     render json: { message: message }, status: status
   end
 
+  def render_not_found(resource = "Resource")
+    render_error("#{resource} not found", status: :not_found)
+  end
+
+  # --- Serialization ---
+  def serialize_record(record, attributes)
+    attributes.index_with { |attr| record.public_send(attr) }
+  end
+
+  def serialize_collection(records, attributes)
+    records.map { |record| serialize_record(record, attributes) }
+  end
+
   # --- Pagination ---
   # Expects params in the form page[number] and page[size]
   def paginate(scope, default_size: 25, max_size: 100)
@@ -69,5 +82,37 @@ class ApplicationController < ActionController::API
     meta = { page: { number: page_number, size: page_size }, total: total }
 
     [records, meta]
+  end
+
+  # --- Filters ---
+  # Applies common filter[...] params:
+  # - exact: exact match on column (value stripped)
+  # - exact_upcase: exact match with uppercased value (e.g. codes)
+  # - partial: case-insensitive contains match
+  def apply_query_filters(scope, exact: [], exact_upcase: [], partial: [])
+    filters = params.fetch(:filter, {})
+
+    Array(exact).each do |field|
+      value = filters[field]
+      next if value.blank?
+
+      scope = scope.where(field => value.to_s.strip)
+    end
+
+    Array(exact_upcase).each do |field|
+      value = filters[field]
+      next if value.blank?
+
+      scope = scope.where(field => value.to_s.strip.upcase)
+    end
+
+    Array(partial).each do |field|
+      value = filters[field]
+      next if value.blank?
+
+      scope = scope.where("LOWER(#{scope.table_name}.#{field}) LIKE ?", "%#{value.to_s.strip.downcase}%")
+    end
+
+    scope
   end
 end

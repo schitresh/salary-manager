@@ -2,7 +2,16 @@ import { useEffect, useState } from 'react';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DataTable from '../components/DataTable';
+import FilterBar from '../components/FilterBar';
 import { getLocations } from '../api/locations';
+
+const FILTER_FIELDS = [
+  { name: 'country_code', label: 'Country Code' },
+  { name: 'state_code', label: 'State Code' },
+  { name: 'city', label: 'City' },
+];
+
+const EMPTY_FILTERS = { country_code: '', state_code: '', city: '' };
 
 function LocationsPage() {
   const navigate = useNavigate();
@@ -10,12 +19,15 @@ function LocationsPage() {
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [filters, setFilters] = useState(EMPTY_FILTERS);
+  const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
+  const [page, setPage] = useState(1);
 
-  const loadLocations = async () => {
+  const loadLocations = async (nextPage = page, activeFilters = appliedFilters) => {
     setLoading(true);
     setError('');
     try {
-      const result = await getLocations();
+      const result = await getLocations({ page: nextPage, filters: activeFilters });
       setLocations(result?.locations || []);
       setMeta(result?.meta || null);
     } catch (err) {
@@ -26,8 +38,23 @@ function LocationsPage() {
   };
 
   useEffect(() => {
-    loadLocations();
-  }, []);
+    loadLocations(page, appliedFilters);
+  }, [page, appliedFilters]);
+
+  const handleFilterChange = (name, value) => {
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleApply = () => {
+    setPage(1);
+    setAppliedFilters({ ...filters });
+  };
+
+  const handleClear = () => {
+    setFilters(EMPTY_FILTERS);
+    setPage(1);
+    setAppliedFilters(EMPTY_FILTERS);
+  };
 
   return (
     <Box>
@@ -39,6 +66,13 @@ function LocationsPage() {
       </Stack>
 
       <Paper sx={{ p: 2 }}>
+        <FilterBar
+          fields={FILTER_FIELDS}
+          values={filters}
+          onChange={handleFilterChange}
+          onApply={handleApply}
+          onClear={handleClear}
+        />
         <DataTable
           columns={[
             { field: 'city', header: 'City' },
@@ -60,6 +94,7 @@ function LocationsPage() {
           error={error}
           emptyMessage="No locations found."
           meta={meta}
+          onPageChange={setPage}
         />
       </Paper>
     </Box>

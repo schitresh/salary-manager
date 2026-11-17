@@ -18,6 +18,7 @@ function DataTable({
   emptyMessage = 'No records found.',
   rowKey = 'id',
   meta,
+  onPageChange,
 }) {
   if (loading) {
     return (
@@ -64,10 +65,34 @@ function DataTable({
         </TableBody>
       </Table>
       {meta && (
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Total: {meta.total ?? 0}
-          {meta.page ? ` (Page ${meta.page.number}, Size ${meta.page.size})` : ''}
-        </Typography>
+        <Box sx={{ mt: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          <Typography variant="body2" color="text.secondary">
+            Total: {meta.total ?? 0}
+            {meta.page ? ` (Page ${meta.page.number}, Size ${meta.page.size})` : ''}
+          </Typography>
+          {onPageChange && meta.page && (
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Typography
+                component="button"
+                type="button"
+                onClick={() => onPageChange(meta.page.number - 1)}
+                disabled={meta.page.number <= 1}
+                style={{ cursor: meta.page.number <= 1 ? 'default' : 'pointer' }}
+              >
+                Prev
+              </Typography>
+              <Typography
+                component="button"
+                type="button"
+                onClick={() => onPageChange(meta.page.number + 1)}
+                disabled={meta.page.number * meta.page.size >= (meta.total ?? 0)}
+                style={{ cursor: meta.page.number * meta.page.size >= (meta.total ?? 0) ? 'default' : 'pointer' }}
+              >
+                Next
+              </Typography>
+            </Box>
+          )}
+        </Box>
       )}
     </Box>
   );
