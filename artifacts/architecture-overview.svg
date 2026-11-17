@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 360" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <style>
+      .box { fill:#f8fbff; stroke:#2f5d8a; stroke-width:2; rx:10; ry:10; }
+      .small { fill:#ffffff; stroke:#4a78a8; stroke-width:1.5; rx:8; ry:8; }
+      .db { fill:#f8fbff; stroke:#2f5d8a; stroke-width:2; }
+      .title { font-size:18px; font-weight:700; fill:#17324d; }
+      .label { font-size:15px; fill:#17324d; }
+      .sub { font-size:13px; fill:#35566f; }
+      .arrow { stroke:#35566f; stroke-width:2.5; fill:none; marker-end:url(#m); }
+      .arrowtext { font-size:13px; fill:#35566f; }
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#35566f" />
+    </marker>
+  </defs>
+
+  <rect class="box" x="30" y="130" width="170" height="90" rx="12"/>
+  <text class="title" x="115" y="165" text-anchor="middle">HR User</text>
+  <text class="sub" x="115" y="190" text-anchor="middle">(Browser)</text>
+
+  <rect class="box" x="270" y="110" width="200" height="130" rx="12"/>
+  <text class="title" x="370" y="150" text-anchor="middle">Frontend</text>
+  <text class="label" x="370" y="176" text-anchor="middle">React + MUI SPA</text>
+  <text class="sub" x="370" y="198" text-anchor="middle">(Vite)</text>
+
+  <rect class="box" x="540" y="55" width="250" height="240" rx="12"/>
+  <text class="title" x="665" y="92" text-anchor="middle">Backend</text>
+  <text class="label" x="665" y="116" text-anchor="middle">Ruby on Rails API (/v1)</text>
+
+  <rect class="small" x="560" y="135" width="100" height="34" rx="8"/>
+  <text class="sub" x="610" y="157" text-anchor="middle">Auth &amp; Users</text>
+  <rect class="small" x="670" y="135" width="100" height="34" rx="8"/>
+  <text class="sub" x="720" y="157" text-anchor="middle">Locations</text>
+  <rect class="small" x="560" y="178" width="100" height="34" rx="8"/>
+  <text class="sub" x="610" y="200" text-anchor="middle">Departments</text>
+  <rect class="small" x="670" y="178" width="100" height="34" rx="8"/>
+  <text class="sub" x="720" y="200" text-anchor="middle">Employees</text>
+  <rect class="small" x="560" y="221" width="100" height="34" rx="8"/>
+  <text class="sub" x="610" y="243" text-anchor="middle">Salaries</text>
+  <rect class="small" x="670" y="221" width="100" height="34" rx="8"/>
+  <text class="sub" x="720" y="243" text-anchor="middle">Analytics</text>
+
+  <ellipse class="db" cx="890" cy="145" rx="55" ry="18"/>
+  <rect class="db" x="835" y="145" width="110" height="70"/>
+  <ellipse class="db" cx="890" cy="215" rx="55" ry="18"/>
+  <line x1="835" y1="145" x2="835" y2="215" stroke="#2f5d8a" stroke-width="2"/>
+  <line x1="945" y1="145" x2="945" y2="215" stroke="#2f5d8a" stroke-width="2"/>
+  <text class="title" x="890" y="188" text-anchor="middle">MySQL</text>
+  <text class="sub" x="890" y="245" text-anchor="middle">Database</text>
+
+  <path class="arrow" d="M200,175 L270,175" />
+  <path class="arrow" d="M470,175 L540,175" />
+  <text class="arrowtext" x="505" y="160" text-anchor="middle">REST /v1</text>
+  <text class="arrowtext" x="505" y="178" text-anchor="middle">JSON, JWT</text>
+  <path class="arrow" d="M790,175 L835,175" />
+</svg>
