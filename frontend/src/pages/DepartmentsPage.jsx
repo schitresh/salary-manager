@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Button, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DataTable from '../components/DataTable';
 import FilterBar from '../components/FilterBar';
 import { getDepartments } from '../api/departments';
-
-const FILTER_FIELDS = [
-  { name: 'name', label: 'Name' },
-  { name: 'location_id', label: 'Location ID' },
-];
+import { getLocations } from '../api/locations';
 
 const EMPTY_FILTERS = { name: '', location_id: '' };
 
@@ -20,12 +16,41 @@ function formatLocation(location) {
 function DepartmentsPage() {
   const navigate = useNavigate();
   const [departments, setDepartments] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [meta, setMeta] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState(EMPTY_FILTERS);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    let active = true;
+    getLocations({ page: 1, size: 100 })
+      .then((result) => {
+        if (!active) return;
+        setLocations(result?.locations || []);
+      })
+      .catch(() => {
+        // location filter options are a convenience; list can still load without them
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const filterFields = useMemo(() => ([
+    { name: 'name', label: 'Name' },
+    {
+      name: 'location_id',
+      label: 'Location',
+      allLabel: 'All locations',
+      options: locations.map((loc) => ({
+        value: String(loc.id),
+        label: formatLocation(loc),
+      })),
+    },
+  ]), [locations]);
 
   const loadDepartments = async (nextPage = page, activeFilters = appliedFilters) => {
     setLoading(true);
@@ -71,7 +96,7 @@ function DepartmentsPage() {
 
       <Paper sx={{ p: 2 }}>
         <FilterBar
-          fields={FILTER_FIELDS}
+          fields={filterFields}
           values={filters}
           onChange={handleFilterChange}
           onApply={handleApply}
