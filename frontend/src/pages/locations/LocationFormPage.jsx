@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Alert, Box, Button, Paper, Stack, TextField, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createLocation, getLocation, updateLocation } from '../api/locations';
+import { createLocation, getLocation, updateLocation } from '../../api/locations';
 
 const initialValues = { city: '', state_code: '', country_code: '' };
 

@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import AsyncAutocomplete from '../components/AsyncAutocomplete';
-import { getDepartments } from '../api/departments';
-import { getEmployee, getEmployees } from '../api/employees';
-import { createSalary, getSalary, updateSalary } from '../api/salaries';
+import AsyncAutocomplete from '../../components/AsyncAutocomplete';
+import { getDepartments } from '../../api/departments';
+import { getEmployee, getEmployees } from '../../api/employees';
+import { createSalary, getSalary, updateSalary } from '../../api/salaries';
 
 const initialValues = {
   employee_id: '',

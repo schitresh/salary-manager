@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDepartment } from '../api/departments';
+import { getDepartment } from '../../api/departments';
+import DetailFields from '../../components/DetailFields';
+import PageHeader from '../../components/PageHeader';
+import ResourceState from '../../components/ResourceState';
 
 function formatLocation(location) {
   if (!location) return '-';
@@ -34,37 +37,42 @@ function DepartmentDetailPage() {
     };
   }, [id]);
 
-  if (loading) return <CircularProgress size={24} />;
-  if (error) return <Alert severity="error">{error}</Alert>;
-  if (!department) return <Alert severity="warning">Department not found.</Alert>;
-
   return (
     <Box>
-      <Stack spacing={2} sx={{ mb: 3 }}>
-        <Typography variant="h4">Department Details</Typography>
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Button variant="outlined" size="small" onClick={() => navigate('/departments')}>Back</Button>
-          <Button variant="contained" size="small" onClick={() => navigate(`/departments/${id}/edit`)}>Edit</Button>
-        </Stack>
-      </Stack>
+      <PageHeader
+        title="Department Details"
+        actionsBelow
+        actions={[
+          <Button key="back" variant="outlined" size="small" onClick={() => navigate('/departments')}>Back</Button>,
+          <Button key="edit" variant="contained" size="small" onClick={() => navigate(`/departments/${id}/edit`)}>Edit</Button>,
+        ]}
+      />
 
-      <Paper sx={{ p: 3, maxWidth: 700 }}>
-        <Typography><strong>Name:</strong> {department.name}</Typography>
-        <Typography><strong>Location:</strong> {formatLocation(department.location)}</Typography>
-        <Typography><strong>Location ID:</strong> {department.location_id}</Typography>
-        <Typography>
-          <strong>Head Employee:</strong>{' '}
-          {department.head_employee
-            ? `${department.head_employee.employee_code} - ${department.head_employee.first_name} ${department.head_employee.last_name}`
-            : '-'}
-        </Typography>
-        <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-          Created: {department.created_at ? new Date(department.created_at).toLocaleString() : '-'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Updated: {department.updated_at ? new Date(department.updated_at).toLocaleString() : '-'}
-        </Typography>
-      </Paper>
+      <ResourceState loading={loading} error={error} isEmpty={!loading && !error && !department} emptyMessage="Department not found.">
+        {department && (
+          <Paper sx={{ p: 3, maxWidth: 700 }}>
+            <DetailFields
+              fields={[
+                { label: 'Name', value: department.name },
+                { label: 'Location', value: formatLocation(department.location) },
+                { label: 'Location ID', value: department.location_id },
+                {
+                  label: 'Head Employee',
+                  value: department.head_employee
+                    ? `${department.head_employee.employee_code} - ${department.head_employee.first_name} ${department.head_employee.last_name}`
+                    : '-',
+                },
+              ]}
+            />
+            <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
+              Created: {department.created_at ? new Date(department.created_at).toLocaleString() : '-'}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Updated: {department.updated_at ? new Date(department.updated_at).toLocaleString() : '-'}
+            </Typography>
+          </Paper>
+        )}
+      </ResourceState>
     </Box>
   );
 }

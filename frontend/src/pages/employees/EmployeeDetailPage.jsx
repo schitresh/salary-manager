@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getEmployee } from '../api/employees';
+import { getEmployee } from '../../api/employees';
+import DetailFields from '../../components/DetailFields';
+import PageHeader from '../../components/PageHeader';
+import ResourceState from '../../components/ResourceState';
 
 function formatLocation(location) {
   if (!location) return '-';
@@ -34,42 +37,45 @@ function EmployeeDetailPage() {
     };
   }, [id]);
 
-  if (loading) return <CircularProgress size={24} />;
-  if (error) return <Alert severity="error">{error}</Alert>;
-  if (!employee) return <Alert severity="warning">Employee not found.</Alert>;
-
-  const dept = employee.department;
-
   return (
     <Box>
-      <Stack spacing={2} sx={{ mb: 3 }}>
-        <Typography variant="h4">Employee Details</Typography>
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Button variant="outlined" size="small" onClick={() => navigate('/employees')}>Back</Button>
-          <Button variant="outlined" size="small" onClick={() => navigate(`/salaries?employee_id=${id}`)}>Salary History</Button>
-          <Button variant="outlined" size="small" onClick={() => navigate(`/salaries/new?employee_id=${id}`)}>Add Salary</Button>
-          <Button variant="contained" size="small" onClick={() => navigate(`/employees/${id}/edit`)}>Edit</Button>
-        </Stack>
-      </Stack>
+      <PageHeader
+        title="Employee Details"
+        actionsBelow
+        actions={[
+          <Button key="back" variant="outlined" size="small" onClick={() => navigate('/employees')}>Back</Button>,
+          <Button key="history" variant="outlined" size="small" onClick={() => navigate(`/salaries?employee_id=${id}`)}>Salary History</Button>,
+          <Button key="add-salary" variant="outlined" size="small" onClick={() => navigate(`/salaries/new?employee_id=${id}`)}>Add Salary</Button>,
+          <Button key="edit" variant="contained" size="small" onClick={() => navigate(`/employees/${id}/edit`)}>Edit</Button>,
+        ]}
+      />
 
-      <Paper sx={{ p: 3, maxWidth: 800 }}>
-        <Typography><strong>Employee Code:</strong> {employee.employee_code}</Typography>
-        <Typography><strong>Name:</strong> {employee.first_name} {employee.last_name}</Typography>
-        <Typography><strong>Email:</strong> {employee.email}</Typography>
-        <Typography><strong>Phone:</strong> {employee.phone}</Typography>
-        <Typography><strong>Job Title:</strong> {employee.job_title}</Typography>
-        <Typography><strong>Date of Birth:</strong> {employee.date_of_birth || '-'}</Typography>
-        <Typography><strong>Date of Joining:</strong> {employee.date_of_joining || '-'}</Typography>
-        <Typography><strong>Last Working Day:</strong> {employee.last_working_day || '-'}</Typography>
-        <Typography sx={{ mt: 2 }}><strong>Department:</strong> {dept?.name || '-'}</Typography>
-        <Typography><strong>Location:</strong> {formatLocation(dept?.location)}</Typography>
-        <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-          Created: {employee.created_at ? new Date(employee.created_at).toLocaleString() : '-'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Updated: {employee.updated_at ? new Date(employee.updated_at).toLocaleString() : '-'}
-        </Typography>
-      </Paper>
+      <ResourceState loading={loading} error={error} isEmpty={!loading && !error && !employee} emptyMessage="Employee not found.">
+        {employee && (
+          <Paper sx={{ p: 3, maxWidth: 800 }}>
+            <DetailFields
+              fields={[
+                { label: 'Employee Code', value: employee.employee_code },
+                { label: 'Name', value: `${employee.first_name} ${employee.last_name}` },
+                { label: 'Email', value: employee.email },
+                { label: 'Phone', value: employee.phone },
+                { label: 'Job Title', value: employee.job_title },
+                { label: 'Date of Birth', value: employee.date_of_birth || '-' },
+                { label: 'Date of Joining', value: employee.date_of_joining || '-' },
+                { label: 'Last Working Day', value: employee.last_working_day || '-' },
+                { label: 'Department', value: employee.department?.name || '-', sx: { mt: 2 } },
+                { label: 'Location', value: formatLocation(employee.department?.location) },
+              ]}
+            />
+            <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
+              Created: {employee.created_at ? new Date(employee.created_at).toLocaleString() : '-'}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Updated: {employee.updated_at ? new Date(employee.updated_at).toLocaleString() : '-'}
+            </Typography>
+          </Paper>
+        )}
+      </ResourceState>
     </Box>
   );
 }

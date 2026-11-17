@@ -13,8 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDepartments } from '../api/departments';
-import { createEmployee, getEmployee, updateEmployee } from '../api/employees';
+import { getDepartments } from '../../api/departments';
+import { createEmployee, getEmployee, updateEmployee } from '../../api/employees';
 
 const initialValues = {
   employee_code: '',

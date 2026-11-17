@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import DataTable from '../components/DataTable';
-import FilterBar from '../components/FilterBar';
-import { getDepartments } from '../api/departments';
-import { getEmployees } from '../api/employees';
-import { getLocations } from '../api/locations';
+import DataTable from '../../components/DataTable';
+import FilterBar from '../../components/FilterBar';
+import PageHeader from '../../components/PageHeader';
+import { getDepartments } from '../../api/departments';
+import { getEmployees } from '../../api/employees';
+import { getLocations } from '../../api/locations';
 
 const EMPTY_FILTERS = {
   employee_code: '',
@@ -100,12 +101,10 @@ function EmployeesPage() {
 
   return (
     <Box>
-      <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", sm: "center" }} spacing={2} sx={{ mb: 3 }}>
-        <Typography variant="h4">Employees</Typography>
-        <Button variant="contained" onClick={() => navigate('/employees/new')}>
-          Add Employee
-        </Button>
-      </Stack>
+      <PageHeader
+        title="Employees"
+        actions={<Button variant="contained" onClick={() => navigate('/employees/new')}>Add Employee</Button>}
+      />
 
       <Paper sx={{ p: 2 }}>
         <FilterBar

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, CircularProgress, Paper, Stack, Typography } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getSalary } from '../api/salaries';
+import { getSalary } from '../../api/salaries';
+import DetailFields from '../../components/DetailFields';
+import PageHeader from '../../components/PageHeader';
+import ResourceState from '../../components/ResourceState';
 
 function formatEmployee(emp) {
   if (!emp) return '-';
@@ -32,34 +35,39 @@ function SalaryDetailPage() {
     return () => { active = false; };
   }, [id]);
 
-  if (loading) return <CircularProgress size={24} />;
-  if (error) return <Alert severity="error">{error}</Alert>;
-  if (!salary) return <Alert severity="warning">Salary record not found.</Alert>;
-
   return (
     <Box>
-      <Stack spacing={2} sx={{ mb: 3 }}>
-        <Typography variant="h4">Salary Details</Typography>
-        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-          <Button variant="outlined" size="small" onClick={() => navigate('/salaries')}>Back</Button>
-          <Button variant="contained" size="small" onClick={() => navigate(`/salaries/${id}/edit`)}>Edit</Button>
-        </Stack>
-      </Stack>
+      <PageHeader
+        title="Salary Details"
+        actionsBelow
+        actions={[
+          <Button key="back" variant="outlined" size="small" onClick={() => navigate('/salaries')}>Back</Button>,
+          <Button key="edit" variant="contained" size="small" onClick={() => navigate(`/salaries/${id}/edit`)}>Edit</Button>,
+        ]}
+      />
 
-      <Paper sx={{ p: 3, maxWidth: 800 }}>
-        <Typography><strong>Employee:</strong> {formatEmployee(salary.employee)}</Typography>
-        <Typography><strong>Department:</strong> {salary.department?.name || '-'}</Typography>
-        <Typography><strong>Job Title:</strong> {salary.job_title}</Typography>
-        <Typography><strong>Currency:</strong> {salary.currency}</Typography>
-        <Typography><strong>Frequency:</strong> {salary.frequency}</Typography>
-        <Typography sx={{ mt: 2 }}><strong>Base Amount:</strong> {salary.base_amount}</Typography>
-        <Typography><strong>HRA Amount:</strong> {salary.hra_amount}</Typography>
-        <Typography><strong>Bonus Amount:</strong> {salary.bonus_amount}</Typography>
-        <Typography><strong>Deduction Amount:</strong> {salary.deduction_amount}</Typography>
-        <Typography><strong>Total Amount:</strong> {salary.total_amount}</Typography>
-        <Typography sx={{ mt: 2 }}><strong>Applicable From:</strong> {salary.applicable_from}</Typography>
-        <Typography><strong>Applicable Till:</strong> {salary.applicable_till || 'Current (open-ended)'}</Typography>
-      </Paper>
+      <ResourceState loading={loading} error={error} isEmpty={!loading && !error && !salary} emptyMessage="Salary record not found.">
+        {salary && (
+          <Paper sx={{ p: 3, maxWidth: 800 }}>
+            <DetailFields
+              fields={[
+                { label: 'Employee', value: formatEmployee(salary.employee) },
+                { label: 'Department', value: salary.department?.name || '-' },
+                { label: 'Job Title', value: salary.job_title },
+                { label: 'Currency', value: salary.currency },
+                { label: 'Frequency', value: salary.frequency },
+                { label: 'Base Amount', value: salary.base_amount, sx: { mt: 2 } },
+                { label: 'HRA Amount', value: salary.hra_amount },
+                { label: 'Bonus Amount', value: salary.bonus_amount },
+                { label: 'Deduction Amount', value: salary.deduction_amount },
+                { label: 'Total Amount', value: salary.total_amount },
+                { label: 'Applicable From', value: salary.applicable_from, sx: { mt: 2 } },
+                { label: 'Applicable Till', value: salary.applicable_till || 'Current (open-ended)' },
+              ]}
+            />
+          </Paper>
+        )}
+      </ResourceState>
     </Box>
   );
 }

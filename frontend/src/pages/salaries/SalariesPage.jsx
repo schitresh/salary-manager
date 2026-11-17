@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import AsyncAutocomplete from '../components/AsyncAutocomplete';
-import DataTable from '../components/DataTable';
-import { getDepartments } from '../api/departments';
-import { getEmployee, getEmployees } from '../api/employees';
-import { getSalaries } from '../api/salaries';
+import AsyncAutocomplete from '../../components/AsyncAutocomplete';
+import DataTable from '../../components/DataTable';
+import PageHeader from '../../components/PageHeader';
+import { getDepartments } from '../../api/departments';
+import { getEmployee, getEmployees } from '../../api/employees';
+import { getSalaries } from '../../api/salaries';
 
 const EMPTY_TEXT_FILTERS = { job_title: '', currency: '' };
 
@@ -117,12 +118,10 @@ function SalariesPage() {
 
   return (
     <Box>
-      <Stack direction={{ xs: "column", sm: "row" }} justifyContent="space-between" alignItems={{ xs: "flex-start", sm: "center" }} spacing={2} sx={{ mb: 3 }}>
-        <Typography variant="h4">Salaries</Typography>
-        <Button variant="contained" onClick={() => navigate('/salaries/new')}>
-          Add Salary
-        </Button>
-      </Stack>
+      <PageHeader
+        title="Salaries"
+        actions={<Button variant="contained" onClick={() => navigate('/salaries/new')}>Add Salary</Button>}
+      />
 
       <Paper sx={{ p: 2 }}>
         <Stack spacing={2} sx={{ mb: 2 }}>

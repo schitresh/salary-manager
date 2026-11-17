@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import AsyncAutocomplete from '../components/AsyncAutocomplete';
-import { createDepartment, getDepartment, updateDepartment } from '../api/departments';
-import { getEmployees } from '../api/employees';
-import { getLocations } from '../api/locations';
+import AsyncAutocomplete from '../../components/AsyncAutocomplete';
+import { createDepartment, getDepartment, updateDepartment } from '../../api/departments';
+import { getEmployees } from '../../api/employees';
+import { getLocations } from '../../api/locations';
 
 const initialValues = { name: '', location_id: '' };
 

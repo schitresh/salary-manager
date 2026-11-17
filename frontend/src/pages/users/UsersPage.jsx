@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Alert, Box, Button, Paper, TextField, Typography } from '@mui/material';
-import DataTable from '../components/DataTable';
-import { createUser, getUsers } from '../api/users';
+import DataTable from '../../components/DataTable';
+import PageHeader from '../../components/PageHeader';
+import { createUser, getUsers } from '../../api/users';
 
 function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -51,9 +52,7 @@ function UsersPage() {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        HR Users
-      </Typography>
+      <PageHeader title="HR Users" />
 
       <Paper sx={{ p: 2, mb: 3, maxWidth: 600 }}>
         <Typography variant="h6" gutterBottom>

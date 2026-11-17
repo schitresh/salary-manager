@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Alert, Box, Button, Link, Paper, TextField, Typography } from '@mui/material';
 import { Link as RouterLink, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../../auth/AuthContext';
 
 function ResetPasswordPage() {
   const { resetPassword } = useAuth();
