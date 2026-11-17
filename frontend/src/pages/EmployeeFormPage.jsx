@@ -136,9 +136,36 @@ function EmployeeFormPage() {
               <TextField label="Phone" name="phone" value={values.phone} onChange={handleChange} fullWidth required />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-              <TextField label="Date of Birth" name="date_of_birth" type="date" value={values.date_of_birth} onChange={handleChange} fullWidth required InputLabelProps={{ shrink: true }} />
-              <TextField label="Date of Joining" name="date_of_joining" type="date" value={values.date_of_joining} onChange={handleChange} fullWidth required InputLabelProps={{ shrink: true }} />
-              <TextField label="Last Working Day" name="last_working_day" type="date" value={values.last_working_day} onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} helperText="Leave blank if currently working" />
+              <TextField
+                label="Date of Birth"
+                name="date_of_birth"
+                type="date"
+                value={values.date_of_birth}
+                onChange={handleChange}
+                fullWidth
+                required
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+              <TextField
+                label="Date of Joining"
+                name="date_of_joining"
+                type="date"
+                value={values.date_of_joining}
+                onChange={handleChange}
+                fullWidth
+                required
+                slotProps={{ inputLabel: { shrink: true } }}
+              />
+              <TextField
+                label="Last Working Day"
+                name="last_working_day"
+                type="date"
+                value={values.last_working_day}
+                onChange={handleChange}
+                fullWidth
+                slotProps={{ inputLabel: { shrink: true } }}
+                helperText="Leave blank if currently working"
+              />
             </Stack>
             <FormControl fullWidth required>
               <InputLabel id="employee-department-label">Department</InputLabel>
