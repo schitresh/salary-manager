@@ -4,9 +4,10 @@ HR-only employee salary management application built with a **Ruby on Rails (API
 
 It supports HR authentication (Devise + JWT), management of locations/departments/employees, salary history/current compensation tracking, and per-currency salary analytics over current salaries. The app is designed for ~10k employees and ships with a reproducible seed script.
 
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/4d85f467-65d5-451b-b55c-679503fd61a6" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/5c4fff05-70b3-41bb-999c-43ebcbdc01f0" />
-<img width="300" alt="image" src="https://github.com/user-attachments/assets/ea3430ab-7ea7-486f-9612-dcc5c94f8b8a" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/3eea55c0-5ac7-419c-997f-3c4b543ad6c2" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/f75131fe-2203-4e5c-bde9-6210cfdae990" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/d2306665-c62c-42c2-982b-bd474095834f" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/52ae424c-0b1a-4522-a2e5-53b142ab0ad2" />
 
 
 ## Features
